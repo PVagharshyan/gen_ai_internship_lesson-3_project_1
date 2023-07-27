@@ -35,6 +35,9 @@ class Point3D:
         return self.x**2 + self.y**2, self.z**2
 
 class MetClass(type):
+    
+    """A metaclass that creates point classes for different scale systems"""
+    
     def __new__(cls, name, bases, attrs):
         def __init__(self, *args):
             for i in args:
@@ -51,15 +54,24 @@ class MetClass(type):
                 if not self_v[i] == other_v[i]: 
                     return False
             return True
-        
+
         def __hash__(self):
+
+            """hash as such calculates the hash of a given point by a number equal to the size of the starting point"""
+
             result = sum([i**2 for i in self.vector])
             return result
 
         def __str__(self):
+
+            """returns a vector of point coordinates"""
+
             return f'{self.vector}'
 
         def __repr__(self):
+            
+            """general information about the given class"""
+            
             return f'class: {self.__class__.__name__}, vector:{self.vector}' 
         attrs.update({'__init__': __init__, '__eq__': __eq__, '__hash__': __hash__, '__str__': __str__, '__repr__':__repr__})
         return type.__new__(cls, name, bases, attrs)
